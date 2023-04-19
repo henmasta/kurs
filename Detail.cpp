@@ -1,7 +1,6 @@
 #include "headers/Detail.h"
 
 Detail::Detail() {};
-
 Detail::Detail(int Size, string Name, string MetalType) {
     this->Size = Size;
     this->Name = Name;

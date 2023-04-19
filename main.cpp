@@ -6,179 +6,19 @@
 #include <iostream>
 #include <stdlib.h>
 #include <unistd.h>  
+
 #include "headers/Employee.h"
 #include "headers/Detail.h"
+#include "headers/Robot.h"
+#include "headers/Engine.h"
+#include "headers/TurnerMachine.h"
+#include "headers/Welder.h"
 #include "headers/Turner.h"
+#include "headers/RobotWelder.h"
+
 #define MAX 100
 
 using namespace std;
-
-
-
-
-class Engine {
-
-    private:
-        static bool power;
-        int _Power;
-        int Volume;
-        string TypeEngine;
-
-    public:
-        bool Power() {
-            power = !power;
-            return power;
-        }
-    
-};
-bool Engine::power = false;
-
-class TurnerMachine {
-    
-    
-    private:
-        static bool power;
-        string Type;
-        string Mode;
-        string Model;
-
-    public:
-
-        bool Power() {
-            power = !power;
-            return power;
-        }
-};
-
-bool TurnerMachine::power = false;
-
-
-class Welder : public Employee {
-
-    private:
-
-        int Experience;
-        int Department;
-
-    public:
-
-        Welder() {};
-        Welder(string FIO, int Age, int Stage, int Number, int Experience, int Departament) {
-            this->FIO = FIO;
-            this->Age = Age;
-            this->Stage = Stage;
-            this->Number = Number;
-            this->Experience = Experience;
-            this->Department = Departament;
-        };
-        
-        
-        
-        void setDepartment (int Department) { this->Department = Department; }
-        int  getDepartament() { return Department; }
-
-        void setExperience (int Experience) { this->Experience = Experience; }
-        int  getExperience()  { return Experience; }
-
-        void UpExperience() {
-            ++Experience;
-        }
-
-        bool Welding(Detail &_detail) {
-            return (_detail.getName() != "" && _detail.getMetalType() != "" && _detail.getSize() != 0) ?  1 : 0;
-        } 
-
-        bool ColdWelding(Detail &_detail) {
-            return (_detail.getName() != "" && _detail.getMetalType() != "" && _detail.getSize() != 0) ?  1 : 0;
-        }
-};
-
-
-class Robot {
-    
-    protected:
-
-        string Name;
-        string OS;
-        string Manufacture;
-    
-    public:
-
-        void setName(string Name) {this->Name = Name;}
-        string getName() {return Name;}
-        void setOS(string OS) {this->OS = OS;}
-        string getOS() {return OS;}
-        void setManufacture(string Manufacture) {this->Manufacture = Manufacture;}
-        string getManufacture() {return Manufacture;}
-
-        virtual bool Power() = 0;
-        virtual string Status() = 0;
-
-};
-
-class RobotWelder : public Robot, public Welder {
-
-    
-
-    private:
-        static bool power;
-        int Speed;
-        int TimeWelding;
-        float Manipulator;
-        float Radius;
-
-    public:
-
-        RobotWelder() {};
-        RobotWelder(int Speed, int TimeWelding, float Manipulator, float Radius) {
-            this->Speed = Speed;
-            this->TimeWelding = TimeWelding;
-            this->Manipulator = Manipulator;
-            this->Radius = Radius;
-        };
-        ~RobotWelder(){};
-
-
-        void setSpeed(int Speed) {this->Speed = Speed;}
-        int getSpeed() {return Speed;}
-
-        void setTimeWelding(int TimeWelding) {this->TimeWelding = TimeWelding;}
-        int getTimeWelding() {return TimeWelding;}
-
-        void setMainpulator(float Manipulator) {this->Manipulator = Manipulator;}
-        float getManipulator() {return Manipulator;}
-
-        void setRadius(float Radius) {this->Radius = Radius;}
-        float getRadius() {return Radius;}
-
-        bool Power() {
-            power = !power;
-            return power;
-        }
-
-        bool Welding(Detail &_detail) {
-            
-            if (Power()){
-
-                cout << "OK" << endl;
-                if (_detail.getName() != "" && _detail.getMetalType() != "" && _detail.getSize() != 0) {
-                    cout << "Detail welded!" << endl;
-                }
-
-            } else {
-                cout << "ON ROBOT!" << endl;
-            }
-
-            return 0;
-        } 
-
-        float Move(float corner) {return corner;}
-
-
-        string Status() {return "";}
-};  
-
-bool RobotWelder::power = false;
 
 int main () {
 

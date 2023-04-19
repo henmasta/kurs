@@ -1,3 +1,6 @@
+#ifndef _turner_inc_h_
+#define _turner_inc_h_ 
+
 #include "Employee.h"
 #include "Detail.h"
 
@@ -10,7 +13,7 @@ class Turner : public Employee {
 
         public:
 
-            Turner() : Employee(){};
+            Turner();
             Turner (string FIO, int Age, int Stage, int Number);
             bool Trimming(Detail &_detail, int Size);
             
@@ -22,3 +25,5 @@ class Turner : public Employee {
 
             void UpExperience();
 };
+
+#endif

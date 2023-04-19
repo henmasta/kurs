@@ -1,7 +1,5 @@
 #include "headers/Employee.h"
 
-Employee::Employee() {};
-
 void Employee::setFIO(string FIO) { 
     FIO = this->FIO; 
 }

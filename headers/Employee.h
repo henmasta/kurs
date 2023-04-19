@@ -1,3 +1,6 @@
+#ifndef _employee_inc_h_
+#define _employee_inc_h_ 
+
 #include <string>
 using namespace std;
 
@@ -11,7 +14,6 @@ class Employee {
 
     public:
     
-        Employee();
         void setFIO(string FIO);
         string getFIO();
 
@@ -25,3 +27,5 @@ class Employee {
         int getStage();
 
 };
+
+#endif

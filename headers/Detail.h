@@ -1,3 +1,6 @@
+#ifndef _detail_inc_h_
+#define _detail_inc_h_ 
+
 #include <string>
 using namespace std;
 
@@ -22,3 +25,5 @@ class Detail {
         void setMetalType(string MetalType);
         string getMetalType();
 };
+
+#endif
