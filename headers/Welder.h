@@ -26,7 +26,7 @@ class Welder : public Employee {
 
         void UpExperience();
 
-        bool Welding(Detail &_detail);
+        bool Welding(Detail &_detail, int Size);
 
         bool ColdWelding(Detail &_detail);
 };

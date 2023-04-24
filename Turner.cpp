@@ -2,6 +2,7 @@
 #include <iostream>
 #include <unistd.h>  
 #include <string>
+#include <thread>
 
 using namespace std;
 
@@ -28,16 +29,16 @@ bool Turner::Trimming(Detail &_detail, int Size) {
             return 1;
                 
         } else {
-            cout << "New dimensions must be smaller than the previous ones" << endl;
+            cout << "To add size you need a welder" << endl;
         }
 
     } else {
-        //throw invalid_argument("Add detail");
-        cout << "gay" << endl;
+        throw invalid_argument("Add detail");
     }
 
     return 0;
 }
+
 
         
 
