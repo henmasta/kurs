@@ -8,7 +8,7 @@ using namespace std;
 class TurnerMachine {
     
     private:
-        Engine* en;
+        Engine en;
         bool status_en;
         string Type;
         string Mode;
@@ -16,7 +16,7 @@ class TurnerMachine {
 
     public:
     
-        TurnerMachine();
+        //TurnerMachine();
         
         int status;
         bool Power();

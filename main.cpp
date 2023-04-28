@@ -42,7 +42,7 @@ int main () {
     float Radius;
 
     TurnerMachine turn;
-    Engine eng;
+    //Engine eng;
 
     map <int, string> turners_number;
     vector <Turner> turners;
@@ -106,7 +106,7 @@ int main () {
 
             if (choice2 == '3') {
                 if (!turn.Power()) {
-                    cout << eng.getStatusBar() << endl;
+                    //cout << eng.getStatusBar() << endl;
                     if (!turners.empty()) {
 
                         i = 0;
@@ -154,8 +154,8 @@ int main () {
                     if (!turners.empty() && !details.empty()) 
                         turners.at(n-1).Trimming(details.at(det-1), size);
                 } else {
-                    cout << eng.getStatusBar() << endl;
-                    cout << "HZ";
+                    //cout << eng.getStatusBar() << endl;
+                    cout << "Crash";
                 }
             }
 

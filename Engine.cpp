@@ -8,11 +8,11 @@ Engine::Engine() {
 
 void Engine::setStatusBar(int status_bar) {
         this->status_bar = status_bar;
-        std::cout << "This is status bar ->" << status_bar << endl;
+        std::cout << "This is status bar -> " << getStatusBar() << endl;
 }
 
 int Engine::getStatusBar() {
-        return this->status_bar;
+        return status_bar;
 }
 
 

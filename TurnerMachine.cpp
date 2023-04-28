@@ -5,14 +5,15 @@
 //bool status_en = en->Status();
 
 
-TurnerMachine::TurnerMachine() {
+/*TurnerMachine::TurnerMachine() {
     Engine* en = new Engine;
-}
+}*/
 
 bool TurnerMachine::Power() {
 
     std::cout << "Hey" << endl;
-	en->setStatusBar(1);
+	en.setStatusBar(en.getStatusBar()+1);
 
-    return !en->getStatusBar() ? true : false;
+    //return false;
+    return !en.Status() ? true : false;
 }
