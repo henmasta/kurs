@@ -1,12 +1,16 @@
 #include <map>
+#include <dir.h>
 #include <vector>
 #include <thread>
 #include <future>
 #include <string>
 #include <conio.h>
+#include <fstream>
 #include <iostream>
 #include <stdlib.h>
 #include <unistd.h>  
+#include <sys\stat.h>
+#include <filesystem>
 
 #include "headers/Employee.h"
 #include "headers/Detail.h"
@@ -20,6 +24,30 @@
 #define MAX 100
 
 using namespace std;
+using namespace filesystem;
+
+
+
+
+
+int last_line(const string filename) {
+    string str =  "";
+    int n = 0;
+
+    ifstream inClientFile(filename, ios::in);
+ 
+    if (!inClientFile) {
+        cerr << "File could not be opened" << endl;
+        exit(1);
+    }
+ 
+    string buf;
+ 
+    while (getline(inClientFile, buf))
+        n++;
+    
+    return n;
+}
 
 int main () {
 
@@ -40,9 +68,10 @@ int main () {
     int TimeWelding;
     float Manipulator;
     float Radius;
+    ofstream out;
 
     TurnerMachine turn;
-    //Engine eng;
+    Engine eng;
 
     map <int, string> turners_number;
     vector <Turner> turners;
@@ -52,10 +81,23 @@ int main () {
     vector <RobotWelder> robot_welders;
     
     int choice, choice2, choice3;
-    Turner turner("pet", 22, 2, 153);
-    Detail dett(20, "zz", "fe");
+    
+    Turner turner("pety", 22, 2, 153);
+    Detail dett(20, "detail1", "fe");
     turners.push_back(turner);
     details.push_back(dett);
+
+
+    path folderPath("database");
+
+    if (!exists(folderPath) && 
+        !is_directory(folderPath)
+    ) {
+        mkdir("database");
+        ofstream ("database/turners.txt");
+        ofstream ("database/welders.txt");
+        ofstream ("database/robot_welders.txt");
+    }
 
     do {
 
@@ -86,9 +128,25 @@ int main () {
                 cout << "FIO \t Age \t Stage \t Number" << endl;
                 cin >> FIO >> Age >> Stage >> Number;
 
-                turners_number[Number] = to_string(i+1) + " FIO: " + FIO + " Age: " + to_string(Age) + " Stage: " + to_string(Stage) + " Number: " + to_string(Number);
+                turners_number[Number] = to_string(i+1) + "." + " FIO: " + FIO + " Age: " + to_string(Age) + " Stage: " + to_string(Stage) + " Number: " + to_string(Number);
                 Turner turner(FIO, Age, Stage, Number);            
-            
+                
+                out.open("database/turners.json", ios::app);
+                string toFile = "{\n\t \"NO\": " + to_string(i+1) + ",\n\t" +
+                                "\"FIO\": \"" + FIO +"\",\n\t" + 
+                                "\"Age\": " + to_string(Age) + ",\n\t" +
+                                "\"Stage\": " + to_string(Stage) + "\n"  +
+                                "}";
+                
+                cout << toFile << endl;
+                getch();
+                if (i > 1)
+                    if (out.is_open())
+                        out << toFile << endl;
+                else 
+                    if (out.is_open())
+                        out << ", " + toFile << endl;
+
                 turners.push_back(turner);
                 cout << "OK" << endl;
 
@@ -159,6 +217,9 @@ int main () {
                 }
             }
 
+            if (choice2 == '4') {
+                turn.ToZero();
+            }
             
             if (choice2 == '5') {
 
@@ -313,6 +374,105 @@ int main () {
             }
         }
 
+        if (choice == '3') {
+
+            cout << "1. Add Robot Welder\n" <<
+                    "2. Output robot welders list\n" <<
+                    "3. Welding detail\n" <<
+                    "4. Del Robot Welder\n" << 
+                    "Esc. Exit" << endl;
+            
+            choice2 = getch();
+
+            if (choice2 == '1') {
+                cout << "NO \t Speed \t Time Welding \t Manipulator \t Radius" << endl;
+
+                do {
+                    cin >> Speed >> TimeWelding >> Manipulator >> Radius;
+                    fflush(stdin);
+                } while (Speed < 0 || 
+                        TimeWelding < 0 || 
+                        Manipulator < 0 || 
+                        Radius < 0);
+
+                RobotWelder robot_welder(Speed, TimeWelding, Manipulator, Radius);            
+            
+                robot_welders.push_back(robot_welder);
+                cout << "OK" << endl;   
+            }
+
+            if (choice2 == '2') {
+                i = 0;
+
+                cout << "Robot Welders:" << endl;
+                cout << "Speed \t Time Welding \t Manipulator \t Radius" << endl;
+
+                for (RobotWelder r : robot_welders) 
+                    cout << to_string(++i) + ". " + to_string(r.getSpeed()) << "\t"
+                         << r.getTimeWelding() << "\t"
+                         << r.getManipulator() << "\t"
+                         << r.getRadius()
+                    << endl;
+            }
+
+            if (choice2 == '3') {
+                if (!robot_welders.empty()) {
+
+                    i = 0;
+                    cout << "Who make it's work? " << endl;
+
+                    cout << "FIO \t Age \t Stage \t Number \t Experience \t Departament" << endl;
+
+                    for(RobotWelder r : robot_welders) 
+                        cout << to_string(++i) + ". " + to_string(r.getSpeed()) << "\t"
+                            << r.getTimeWelding() << "\t"
+                            << r.getManipulator() << "\t"
+                            << r.getRadius()
+                        << endl;
+                    
+                    do {
+                        cout << "Enter robot welder number: ";
+                        cin >> n;
+                    } while(n < 0 || n > i);
+                
+
+                    if (!details.empty()) {
+                        i = 0;
+                        for(Detail d : details) 
+                            cout << to_string(++i) + ". " + to_string(d.getSize()) << " \t " << 
+                                                                    d.getName() << " \t " << 
+                                                                    d.getMetalType() << endl;
+                        do {
+
+                            cout << "Enter number detail: ";
+                            cin >> det;
+                            if (det > i || det < 0) cout << "Enter exactly number!" << endl;
+                                            
+                        } while (det > i || det < 0);
+
+                        do {
+
+                            cout << "Enter size detail: ";
+                            cin >> size;
+                            if (size < 0 || size < details.at(det-1).getSize()) 
+                                cout << "Enter exactly size!" << endl;
+
+                        } while(size < 0 || size < details.at(det-1).getSize());
+
+                    } else {
+                        cout << "Add minimum 1 detail" << endl;
+                    }
+                } else {
+                    cout << "Add minimum 1 welder" << endl;
+                }
+                
+
+                if (!robot_welders.empty() && !details.empty()) 
+                    robot_welders.at(n-1).Welding(details.at(det-1), size);
+            }
+
+
+        }
 
         if (choice == '4') {
 

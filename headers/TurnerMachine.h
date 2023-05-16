@@ -20,6 +20,7 @@ class TurnerMachine {
         
         int status;
         bool Power();
+        void ToZero();
 };
 
 #endif

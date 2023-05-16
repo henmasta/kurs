@@ -2,10 +2,15 @@
 #include "headers/Detail.h"
 #include "headers/Robot.h"
 #include "headers/RobotWelder.h"
+#include <unistd.h>  
 #include <iostream>
 using namespace std;
     
-RobotWelder::RobotWelder() {};
+RobotWelder::RobotWelder() {
+    power = false;
+    TimeWelding = 3;
+};
+
 RobotWelder::RobotWelder(int Speed, int TimeWelding, float Manipulator, float Radius) {
     this->Speed = Speed;
     this->TimeWelding = TimeWelding;
@@ -30,14 +35,28 @@ bool RobotWelder::Power() {
     return power;
 }
 
-bool RobotWelder::Welding(Detail &_detail) {
-            
-    if (Power()){
+bool RobotWelder::Welding(Detail &_detail, int Size) {
+    
+    if (!Power()) {
 
-        cout << "OK" << endl;
+        //cout << "OK" << endl;
         if (_detail.getName() != "" && _detail.getMetalType() != "" && _detail.getSize() != 0) {
-            cout << "Detail welded!" << endl;
-        }
+
+                if (Size > _detail.getSize()) {
+
+                    _detail.setSize(Size);
+                    sleep(TimeWelding);
+                    cout << "New size detail: " << Size << endl;
+                    return 1;
+                        
+                } else {
+                    cout << "To reduce the size you need a turner" << endl;
+                }
+
+            } else {
+                //throw invalid_argument("Add detail");
+                cout << "Add detail";
+            }
 
     } else {
         cout << "ON ROBOT!" << endl;
@@ -50,5 +69,3 @@ float RobotWelder::Move(float corner) {return corner;}
 
 
 string RobotWelder::Status() {return "";}
-  
-bool RobotWelder::power = false;

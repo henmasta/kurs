@@ -8,7 +8,7 @@
 class RobotWelder : public Robot, public Welder {
 
     private:
-        static bool power;
+        bool power;
         int Speed;
         int TimeWelding;
         float Manipulator;
@@ -33,7 +33,7 @@ class RobotWelder : public Robot, public Welder {
         float getRadius();
 
         bool Power();
-        bool Welding(Detail &_detail);
+        bool Welding(Detail &_detail, int Size);
 
         float Move(float corner);
 

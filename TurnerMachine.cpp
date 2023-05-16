@@ -2,18 +2,18 @@
 #include "headers/Engine.h"
 #include <iostream>
 
-//bool status_en = en->Status();
-
-
-/*TurnerMachine::TurnerMachine() {
-    Engine* en = new Engine;
-}*/
-
 bool TurnerMachine::Power() {
 
-    std::cout << "Hey" << endl;
-	en.setStatusBar(en.getStatusBar()+1);
+    if (!en.Status()) {
+        en.setStatusBar(en.getStatusBar()+1);
+        return false;
+    }
+    else {
+        return true;
+    }
+    //return en.Status() ? false : true;
+}
 
-    //return false;
-    return !en.Status() ? true : false;
+void TurnerMachine::ToZero() {
+    en.setStatusBar(1);
 }
