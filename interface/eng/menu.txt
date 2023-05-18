@@ -1,0 +1,5 @@
+1. Turner
+2. Welder
+3. Robot Welder
+4. Detail
+Esc. Exit

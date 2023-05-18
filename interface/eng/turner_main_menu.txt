@@ -1,0 +1,6 @@
+1. Add Turner
+2. Output turners list
+3. Trimming detail
+4. Fix Turner Machine
+5. Del Turner
+Esc. Exit

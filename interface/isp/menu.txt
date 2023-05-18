@@ -1,0 +1,5 @@
+1. Tornero
+2. Soldador
+3. Robot de soldadura
+4. Detalle
+Esc Salir

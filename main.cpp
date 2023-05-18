@@ -26,11 +26,37 @@
 using namespace std;
 using namespace filesystem;
 
+/*
+void write_to_file(string file, vector<Turner> trn) {
 
+    string file_line;
+    string FIO;
+    
 
+    ifstream in(file);
 
+    if (in.is_open()) 
+        while (getline(in, file_line))
+            trn.push_back(file_line);
+    
+    in.close();
+}
+*/
+void read_from_file(string file) {
+
+    string file_line;
+
+    ifstream in(file);
+
+    if (in.is_open()) 
+        while (getline(in, file_line))
+            cout << file_line << endl;
+    
+    in.close();
+}
 
 int last_line(const string filename) {
+
     string str =  "";
     int n = 0;
 
@@ -49,13 +75,18 @@ int last_line(const string filename) {
     return n;
 }
 
+
 int main () {
 
+
     int size, n, det, i = 0;
+    bool language = true;
+    string path_to_lang = "interface/isp/";
+    
 
     string FIO  ;
-    int   Age   ;
-    int   Stage ;
+    int    Age  ;
+    int    Stage;
     int   Number;
     int Experience;
     int Departament;
@@ -101,25 +132,30 @@ int main () {
 
     do {
 
+
         system("cls");
+        if(language)
+            path_to_lang = "interface/eng/";
+        else 
+            path_to_lang = "interface/isp/";
         
-        cout << "1. Turner\n" <<
-                "2. Welder\n" <<
-                "3. Robot Welder\n" <<
-                "4. Detail\n" << 
-                "Esc. Exit" << endl;
+        read_from_file(path_to_lang + "menu.txt");
+        
 
         choice = getch();
+        
         system("cls");
 
+        if (choice == 9)  {
+
+            language = !language;
+            
+            cout << "Language replaced" << endl;
+        }
+        
         if (choice == '1') {
 
-            cout << "1. Add Turner\n" <<
-                    "2. Output turners list\n" <<
-                    "3. Trimming detail\n" <<
-                    "4. Fix Turner Machine\n" <<
-                    "5. Del Turner\n" << 
-                    "Esc. Exit" << endl;
+            read_from_file(path_to_lang + "turner_main_menu.txt");
             
             choice2 = getch();
 
@@ -131,24 +167,17 @@ int main () {
                 turners_number[Number] = to_string(i+1) + "." + " FIO: " + FIO + " Age: " + to_string(Age) + " Stage: " + to_string(Stage) + " Number: " + to_string(Number);
                 Turner turner(FIO, Age, Stage, Number);            
                 
-                out.open("database/turners.json", ios::app);
-                string toFile = "{\n\t \"NO\": " + to_string(i+1) + ",\n\t" +
-                                "\"FIO\": \"" + FIO +"\",\n\t" + 
-                                "\"Age\": " + to_string(Age) + ",\n\t" +
-                                "\"Stage\": " + to_string(Stage) + "\n"  +
-                                "}";
+                out.open("database/turners.txt", ios::app);
+                string toFile = FIO + " " + to_string(Age) + " " + to_string(Stage) + " " + to_string(Number);
                 
-                cout << toFile << endl;
-                getch();
-                if (i > 1)
-                    if (out.is_open())
-                        out << toFile << endl;
-                else 
-                    if (out.is_open())
-                        out << ", " + toFile << endl;
+                //cout << toFile << endl;
+
+                if (out.is_open())
+                    out << toFile << endl;
 
                 turners.push_back(turner);
                 cout << "OK" << endl;
+                out.close();
 
             }
 
@@ -168,14 +197,23 @@ int main () {
                     if (!turners.empty()) {
 
                         i = 0;
-                        cout << "Who make it's work? " << endl;
+                        
+                        if (language)
+                            cout << "Who make it's work? " << endl;
+                        else
+                            cout << "Quien hace que funcione? " << endl;
+                        
                         for(Turner t : turners) 
                             cout << to_string(++i) + ". " + t.getFIO() << " \t " << 
                                                             t.getAge() << " \t " << 
                                                             t.getStage() << " \t " << 
                                                             t.getNumber() << endl;
                         do {
-                            cout << "Enter tuner number: ";
+                            if (language)
+                                cout << "Enter tuner number: ";
+                            else
+                                cout << "Introduzca el numero de sintonizador: ";
+
                             cin >> n;
                         } while(n < 0 || n > i);
                     
@@ -188,9 +226,18 @@ int main () {
                                                                         d.getMetalType() << endl;
                             do {
 
-                                cout << "Enter number detail: ";
+                                if (language)
+                                    cout << "Enter number detail: ";
+                                else
+                                    cout << "Ingrese el detalle del numero: ";
+
                                 cin >> det;
-                                if (det > i || det < 0) cout << "Enter exactly number!" << endl;
+
+                                if (det > i || det < 0) 
+                                    if (language)
+                                        cout << "Enter exactly number!" << endl;
+                                    else 
+                                        cout << "Ingrese el numero exacto!" << endl;
                                                 
                             } while (det > i || det < 0);
 
@@ -211,8 +258,8 @@ int main () {
 
                     if (!turners.empty() && !details.empty()) 
                         turners.at(n-1).Trimming(details.at(det-1), size);
+
                 } else {
-                    //cout << eng.getStatusBar() << endl;
                     cout << "Crash";
                 }
             }
@@ -533,7 +580,7 @@ int main () {
 
         getch();
 
-    } while(choice != 27 || choice2 != 27 || choice3 != 27);
+    } while(choice != 27 || choice2 != 27 || choice3 != 27 || choice != 0 || choice2 != 0 || choice3 != 0);
 
 
 
