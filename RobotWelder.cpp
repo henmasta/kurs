@@ -37,7 +37,7 @@ bool RobotWelder::Power() {
 
 bool RobotWelder::Welding(Detail &_detail, int Size) {
     
-    if (!Power()) {
+    if (!power) {
 
         //cout << "OK" << endl;
         if (_detail.getName() != "" && _detail.getMetalType() != "" && _detail.getSize() != 0) {

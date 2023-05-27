@@ -26,22 +26,41 @@
 using namespace std;
 using namespace filesystem;
 
-/*
-void write_to_file(string file, vector<Turner> trn) {
 
+vector<Turner> push_from_file_turner(vector<Turner> trn, string file) {
+    
+    
     string file_line;
-    string FIO;
-    
 
-    ifstream in(file);
-
-    if (in.is_open()) 
-        while (getline(in, file_line))
-            trn.push_back(file_line);
+    int NO;
+    string FIO  ;
+    int    Age  ;
+    int    Stage;
+    int   Number;
     
-    in.close();
+    ifstream turner_file(file);
+
+    if(!turner_file && !exists(file)) {
+        cout << "error open file " << file << endl;
+        ofstream (file);
+        return trn;
+    }
+    
+    while (!turner_file.eof()){
+        turner_file >> NO;
+        turner_file >> FIO;
+        turner_file >> Age;
+        turner_file >> Stage;
+        turner_file >> Number;
+
+        Turner turner(FIO, Age, Stage, Number);
+        trn.push_back(turner);
+    }
+
+    return trn;
+     
 }
-*/
+
 void read_from_file(string file) {
 
     string file_line;
@@ -72,9 +91,13 @@ int last_line(const string filename) {
     while (getline(inClientFile, buf))
         n++;
     
+    if (n < 1) return n+1;
     return n;
 }
-
+/*
+1 pet 22 2 153
+2 gg 12 4 152
+*/
 
 int main () {
 
@@ -82,7 +105,14 @@ int main () {
     int size, n, det, i = 0;
     bool language = true;
     string path_to_lang = "interface/isp/";
+    string turner_data = "database/turners";
     
+    vector <Turner> turners;
+    vector <TurnerMachine> mach;
+    vector <Detail> details;
+    vector <Welder> welders;
+    vector <RobotWelder> robot_welders;
+
 
     string FIO  ;
     int    Age  ;
@@ -105,35 +135,40 @@ int main () {
     Engine eng;
 
     map <int, string> turners_number;
-    vector <Turner> turners;
-    vector <TurnerMachine> mach;
-    vector <Detail> details;
-    vector <Welder> welders;
-    vector <RobotWelder> robot_welders;
+    
     
     int choice, choice2, choice3;
     
-    Turner turner("pety", 22, 2, 153);
-    Detail dett(20, "detail1", "fe");
-    turners.push_back(turner);
-    details.push_back(dett);
+    //Turner turner("pety", 22, 2, 153);
+    //Detail dett(20, "detail1", "fe");
+    //turners.push_back(turner);
+    //details.push_back(dett);
 
 
-    path folderPath("database");
+    //path folderPath("database");
 
-    if (!exists(folderPath) && 
+    ofstream f("database/turners.txt");
+
+    f << "";
+    f.close();
+
+    /*if (!exists(folderPath) && 
         !is_directory(folderPath)
     ) {
-        mkdir("database");
+        //mkdir("database");
         ofstream ("database/turners.txt");
         ofstream ("database/welders.txt");
         ofstream ("database/robot_welders.txt");
-    }
+    }*/
+
+
+
+
+    turners = push_from_file_turner(turners, "database/turners.txt");
 
     do {
 
-
-        system("cls");
+        //system("cls");
         if(language)
             path_to_lang = "interface/eng/";
         else 
@@ -144,8 +179,7 @@ int main () {
 
         choice = getch();
         
-        system("cls");
-
+        //system("cls");
         if (choice == 9)  {
 
             language = !language;
@@ -164,26 +198,18 @@ int main () {
                 cout << "FIO \t Age \t Stage \t Number" << endl;
                 cin >> FIO >> Age >> Stage >> Number;
 
-                turners_number[Number] = to_string(i+1) + "." + " FIO: " + FIO + " Age: " + to_string(Age) + " Stage: " + to_string(Stage) + " Number: " + to_string(Number);
+                turners_number[Number] = to_string(last_line("database/turners.txt")) + "." + " FIO: " + FIO + " Age: " + to_string(Age) + " Stage: " + to_string(Stage) + " Number: " + to_string(Number);
                 Turner turner(FIO, Age, Stage, Number);            
                 
-                out.open("database/turners.txt", ios::app);
-                string toFile = FIO + " " + to_string(Age) + " " + to_string(Stage) + " " + to_string(Number);
-                
-                //cout << toFile << endl;
-
-                if (out.is_open())
-                    out << toFile << endl;
-
                 turners.push_back(turner);
                 cout << "OK" << endl;
-                out.close();
-
             }
 
             if (choice2 == '2') {
                 i = 0;
                 cout << "Turners: " << endl;
+                cout << "NO \t FIO \t Age \t Stage \t Number" << endl;
+
                 for(Turner t : turners) 
                     cout << to_string(++i) + ". " + t.getFIO() << " \t " << 
                                                     t.getAge() << " \t " << 
@@ -426,7 +452,8 @@ int main () {
             cout << "1. Add Robot Welder\n" <<
                     "2. Output robot welders list\n" <<
                     "3. Welding detail\n" <<
-                    "4. Del Robot Welder\n" << 
+                    "4. On robot\n" <<
+                    "5. Del Robot Welder\n" << 
                     "Esc. Exit" << endl;
             
             choice2 = getch();
@@ -518,6 +545,14 @@ int main () {
                     robot_welders.at(n-1).Welding(details.at(det-1), size);
             }
 
+            if (choice2 == '4') {
+                cout << "Number robot for on/off: ";
+                do {
+                    cin >> n;
+                } while(n < 0 || n > i);
+                robot_welders.at(n-1).Power();
+            }
+
 
         }
 
@@ -578,158 +613,28 @@ int main () {
             }
         }
 
+
+        if (choice == 48) {
+            break;
+        }
         getch();
 
-    } while(choice != 27 || choice2 != 27 || choice3 != 27 || choice != 0 || choice2 != 0 || choice3 != 0);
+    } while((choice != 48));
 
+    cout << "goodbye" << endl;
 
-
-
-
-
-
-
-
-    /*
-    do {
-
-        system("cls");
-
-        cout << "1. Add Turner\n" <<
-                "2. Add Welder\n" <<
-                "3. Add Robot Welder\n" <<
-                "4. Add Detail\n" <<
-                "5. Output Turner\n" <<
-                "6. Output Welder\n" <<
-                "7. Turner\n"<<
-                "8. Welder\n" <<
-                "9. Del Turner\n" <<
-                "ESC. Exit" << endl;
-
-        choice = getch();
-
-        //по стандарту C++ 6.7 нельзя обходить объявление инциализации
-        //если кратко switch нельзя
-
-        if (choice == '1') {
-            cout << "FIO \t Age \t Stage \t Number" << endl;
-            cin >> FIO >> Age >> Stage >> Number;
-
-            turners_number[Number] = to_string(i+1) + " FIO: " + FIO + " Age: " + to_string(Age) + " Stage: " + to_string(Stage) + " Number: " + to_string(Number);
-            Turner turner(FIO, Age, Stage, Number);
-
-            //cout << "\nFIO \t Age \t Stage \t Number" << endl;
-            //cout << turner.getFIO() << " \t " << turner.getAge() << " \t " << turner.getStage() << " \t " << turner.getNumber() << endl;
-            
-            
-            turners.push_back(turner);
-            cout << "OK" << endl;
-            //cout << "Number: " + turners_number[153] << endl;
+    i = 0;
+    out.open("database/turners.txt");
+    if (out.is_open())
+        if(last_line("database/turners.txt") != 1)
+            for (Turner t : turners)
+                out << to_string(++i) + " " + t.getFIO() + " " + to_string(t.getAge()) + " " + to_string(t.getStage()) + " " + to_string(t.getNumber());
+        else {
+            for (Turner t : turners)
+                out <<"\n" + to_string(++i) + " " + t.getFIO() + " " + to_string(t.getAge()) + " " + to_string(t.getStage()) + " " + to_string(t.getNumber());
         }
-
-        if (choice == '2') {
-
-            cout << "FIO \t Age \t Stage \t Number" << endl;
-            cin >> FIO >> Age >> Stage >> Number >> Experience >> Departament;
-            //turners[Number] = FIO;
-            Welder welder(FIO, Age, Stage, Number, Experience, Departament);
-
-            cout << "FIO \t Age \t Stage \t Number \t Experience \t Departament" << endl;
-            cout << welder.getFIO() << " \t " << 
-                    welder.getAge() << " \t " <<
-                    welder.getStage() << " \t " << 
-                    welder.getNumber() << " \t " << 
-                    welder.getExperience() << " \t " << 
-                    welder.getDepartament() << endl;
-        }
-
-        if (choice == '3') {
-            cout << "Speed \t Time Welding \t Manipulator \t Radius" << endl;
-            cin >> Speed >> TimeWelding >> Manipulator >> Radius;
-            RobotWelder robot_welder(Speed, TimeWelding, Manipulator, Radius);
-        }
-
-        if (choice == '4') {
-            i = 0;
-            for(Turner t : turners) 
-                cout << to_string(++i) + ". " + t.getFIO() << " \t " << 
-                                                t.getAge() << " \t " << 
-                                                t.getStage() << " \t " << 
-                                                t.getNumber() << endl;
-        }
-
-        if (choice == '6') {
-            system("cls");
-
-            cout << "1. Trimming\n" << 
-                    "2. Exit" << endl;
-
-            choice2 = getch();
-
-            if (choice2 == '1') {
-
-                i = 0;
-                cout << "Who make it's work? " << endl;
-                
-                for(Turner t : turners) 
-                    cout << to_string(++i) + ". " + t.getFIO() << " \t " << 
-                                                    t.getAge() << " \t " << 
-                                                    t.getStage() << " \t " << 
-                                                    t.getNumber() << endl;
-                cin >> n;
-
-                cout << "Enter size detail: ";
-                cin >> size;
-
-                try {
-                    turners.at(n-1).Trimming(detail, size);
-                } catch (const invalid_argument& err) {
-                    //create detail
-
-                    //деталей же тоже несколько может быть...
-                    cout << "Detail not created!" << endl;
-                }
-            }
-        }
-
-
-        if (choice == '8') {
-
-            cout << "Enter Number: " << endl;
-            cin >> n;
-
-            if (i >= n) {
-
-                cout << "Elemet " << turners.at(n-1).getFIO() << " \t " 
-                                  << turners.at(n-1).getAge() << " \t " 
-                                  << turners.at(n-1).getStage() << " \t " 
-                                  << turners.at(n-1).getNumber() 
-                                  << " Delete!" << endl;
-
-                turners.erase(turners.begin() + n-1);
-            } else 
-                cout << "Not exists!" << endl;
-        }
-                   
-        getch();
-
-    } while(choice != 27);
-    
-/*
-petya 22 2 153
-
-gay 35 5 12
-
-natural 5 8 12
-*/
-    //weld.setAge(22);
-
-    //turner.Trimming(detail, 13);
-    //rob.Power();
-    //rob.Power();
-    //!rob.Power() ? cout << "ON\n" : cout << "OFF\n";
-    
-    //rob.Welding(detail);
+    cout << "OK" << endl;
+    out.close();
 
     return 0;
 }

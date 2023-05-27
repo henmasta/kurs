@@ -7,7 +7,12 @@
 using namespace std;
 
 
-Turner::Turner() {};
+Turner::Turner() {
+    FIO = "";
+    Age = 0;
+    Stage = 0;
+    Number = 0;
+};
 
 Turner::Turner(string FIO, int Age, int Stage, int Number) {
     this->FIO = FIO;
