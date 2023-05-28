@@ -1,0 +1,6 @@
+﻿1. Add Robot Welder
+2. Output robot welders list
+3. Welding detail
+4. On robot
+5. Del Robot Welder
+0. Exit

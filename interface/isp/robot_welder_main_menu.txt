@@ -1,0 +1,6 @@
+﻿1. Agregar robot soldador
+2. Lista de soldadores robotizados de salida
+3. Detalle de soldadura
+4. En robot
+5. Del Robot Soldador
+0. Salir

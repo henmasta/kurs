@@ -58,5 +58,5 @@ void Turner::UpExperience() {
 }
 
 void Turner:: operator++ (){
-    Departament += 1;
+    Stage += 1;
 }

@@ -120,7 +120,7 @@ vector<Welder> push_from_file_welder(vector<Welder> wld, string file) {
 
 }
 
-/*
+
 vector<RobotWelder> push_from_file_robot_welder(vector<RobotWelder> rbt, string file) {
     
     int NO;
@@ -141,19 +141,54 @@ vector<RobotWelder> push_from_file_robot_welder(vector<RobotWelder> rbt, string 
     
     while (!robot_welder_file.eof()){
         robot_welder_file >> NO;
+        robot_welder_file >> Speed;
+        robot_welder_file >> TimeWelding;
+        robot_welder_file >> Manipulator;
+        robot_welder_file >> Radius;
         
 
-        RobotWelder robot_welder(FIO, Age, Stage, Number, Experience, Departament);
-        rbt.push_back(welder);
+        RobotWelder robot_welder(Speed, TimeWelding, Manipulator, Radius);
+        rbt.push_back(robot_welder);
     }
 
     return rbt;
 
+}
 
 
+vector<Detail> push_from_file_detail(vector<Detail> det, string file) {
+    
+    int NO;
+    int Size;
+    string Name;
+    string MetalType;    
+
+
+    if (last_line(file) <= 1) return det;
+    
+    ifstream detail_file(file);
+
+    if(!detail_file && !exists(file)) {
+        cout << "error open file " << file << endl;
+        ofstream (file);
+        return det;
+    }
+    
+    while (!detail_file.eof()){
+        detail_file >> NO;
+        detail_file >> Size;
+        detail_file >> Name;
+        detail_file >> MetalType;
+
+        Detail detail(Size, Name, MetalType);
+        det.push_back(detail);
+    }
+
+    return det;
 
 }
-*/
+
+
 
 void read_from_file(string file) {
 
@@ -208,17 +243,26 @@ void set_path_to_database(string user_database_path, string first, string standa
             strcpy(path_folders_to_char, path_folders.c_str());
 
             try {
+                
+                if (regex_match(path_folders, regex("[A-Za-z0-9 ]")))
+                    throw "not created";
 
                 mkdir(path_folders_to_char);
-                if (!exists(path_folders) || regex_match(path_folders, regex("[A-Za-z0-9 ]"))) 
+                if (!exists(path_folders)) 
                     throw "not created";
             } catch (...){
-                cerr << "path not created" << endl;
+                cerr << "path not created \nuncorrected name" << endl;
                 exit(-1);
             }
             delete(path_folders_to_char);
+
+            path_folders = "";
+            file_path_name = "";
+
             out.open(user_database_path);
             out.close();
+
+
         } else {
             user_database_path = standart_path;
 
@@ -288,9 +332,10 @@ int main () {
 
     string user_database_path_turners,
             user_database_path_welders,
-            user_database_path_robot_welders;
+            user_database_path_robot_welders,
+            user_database_path_detail;
 
-    string first_turner, first_welder, first_robot_welder;
+    string first_turner, first_welder, first_robot_welder, first_detail;
     
 
     system("cls");
@@ -299,18 +344,25 @@ int main () {
     cin >> user_database_path_turners;
     first_turner = user_database_path_turners[0]; 
 
+    set_path_to_database(user_database_path_turners, first_turner, "database/turners.txt", out); 
+
     cout << "Enter path for welders to database(for standart path \"database/welders.txt\" type 0): ";
     cin >> user_database_path_welders;
     first_welder = user_database_path_welders[0];
 
+    set_path_to_database(user_database_path_welders, first_welder, "database/welders.txt", out);  
+
     cout << "Enter path for robot welders to database(for standart path \"database/robot_welders.txt\" type 0): ";
     cin >> user_database_path_robot_welders;
     first_robot_welder = user_database_path_robot_welders[0];
-    
 
-    set_path_to_database(user_database_path_turners, first_turner, "database/turners.txt", out);  
-    set_path_to_database(user_database_path_welders, first_welder, "database/welders.txt", out);  
-    set_path_to_database(user_database_path_robot_welders, first_robot_welder, "database/robot_welders.txt", out);    
+    set_path_to_database(user_database_path_robot_welders, first_robot_welder, "database/robot_welders.txt", out);
+
+    cout << "Enter path for robot welders to database(for standart path \"database/details.txt\" type 0): ";
+    cin >> user_database_path_detail;
+    first_detail = user_database_path_detail[0];
+    
+    set_path_to_database(user_database_path_detail, first_detail, "database/detail.txt", out);    
 
     if(!first_turner.compare("0"))
         user_database_path_turners = "database/turners.txt";
@@ -321,6 +373,11 @@ int main () {
     if(!first_robot_welder.compare("0"))
         user_database_path_robot_welders = "database/robot_welders.txt";
 
+    if(!first_detail.compare("0"))
+        user_database_path_detail = "database/detail.txt";
+
+
+
     if (exists(user_database_path_turners)) {
         turners = push_from_file_turner(turners, user_database_path_turners);
     }
@@ -329,9 +386,13 @@ int main () {
         welders = push_from_file_welder(welders, user_database_path_welders);
     }
 
-    //if (exists(user_database_path_robot_welders)) {
-    //    robot_welders = push_from_file_robot_welder(robot_welders, user_database_path_robot_welders);
-    //}
+    if (exists(user_database_path_robot_welders)) {
+        robot_welders = push_from_file_robot_welder(robot_welders, user_database_path_robot_welders);
+    }
+
+    if (exists(user_database_path_detail)) {
+        details = push_from_file_detail(details, user_database_path_detail);
+    }
 
     do {
 
@@ -362,6 +423,14 @@ int main () {
             
             choice2 = getch();
 
+            if (choice2 == 9)  {
+                if (language)
+                    cout << "Language replaced" << endl;
+                else 
+                    cout << "Idioma reemplazado" << endl;
+                language = !language;
+                
+            }
             if (choice2 == '1') {
 
                 cout << "FIO \t Age \t Stage \t Number" << endl;
@@ -440,7 +509,7 @@ int main () {
 
                                 cout << "Enter size detail: ";
                                 cin >> size;
-                                
+
                                 if (size < 0 || size > details.at(det-1).getSize()) 
                                     cout << "Enter exactly size!" << endl;
 
@@ -504,6 +573,15 @@ int main () {
                     "Esc. Exit" << endl;
             
             choice2 = getch();
+
+            if (choice2 == 9)  {
+                if (language)
+                    cout << "Language replaced" << endl;
+                else 
+                    cout << "Idioma reemplazado" << endl;
+                language = !language;
+                
+            }
 
             if (choice2 == '1') {
 
@@ -621,26 +699,19 @@ int main () {
 
         if (choice == '3') {
 
-            if (language)
-                cout << 
-                        "1. Add Robot Welder\n" <<
-                        "2. Output robot welders list\n" <<
-                        "3. Welding detail\n" <<
-                        "4. On robot\n" <<
-                        "5. Del Robot Welder\n" << 
-                        "0. Exit" << 
-                endl;
-            else 
-                cout << 
-                        "1. Agregar robot soldador\n" <<
-                        "2. Salida de lista de soldadores robotizados\n" <<
-                        "3. Detalle de soldadura\n" <<
-                        "4. En robot\n" <<
-                        "5. Del Robot Soldador\n" <<
-                        "0. Salir" << 
-                endl;
+            read_from_file(path_to_lang + "robot_welder_main_menu.txt");
                     
             choice2 = getch();
+
+
+            if (choice2 == 9)  {
+                if (language)
+                    cout << "Language replaced" << endl;
+                else 
+                    cout << "Idioma reemplazado" << endl;
+                language = !language;
+                
+            }
 
             if (choice2 == '1') {
                     
@@ -673,7 +744,10 @@ int main () {
                 i = 0;
 
                 cout << "Robot Welders:" << endl;
-                cout << "Speed \t Time Welding \t Manipulator \t Radius" << endl;
+                if (language)
+                    cout << "NO \t Speed \t Time Welding \t Manipulator \t Radius" << endl;
+                else 
+                    cout << "NO \t Velocidad \t Tiempo Soldadura \t Manipulador \t Radio" << endl;
 
                 for (RobotWelder r : robot_welders) 
                     cout << to_string(++i) + ". " + to_string(r.getSpeed()) << "\t"
@@ -689,7 +763,10 @@ int main () {
                     i = 0;
                     cout << "Who make it's work? " << endl;
 
-                    cout << "FIO \t Age \t Stage \t Number \t Experience \t Departament" << endl;
+                    if (language)
+                        cout << "NO \t Speed \t Time Welding \t Manipulator \t Radius" << endl;
+                    else 
+                        cout << "NO \t Velocidad \t Tiempo Soldadura \t Manipulador \t Radio" << endl;
 
                     for(RobotWelder r : robot_welders) 
                         cout << to_string(++i) + ". " + to_string(r.getSpeed()) << "\t"
@@ -699,7 +776,7 @@ int main () {
                         << endl;
                     
                     do {
-                        cout << "Enter robot welder number: ";
+                        language ? cout << "Enter robot welder number: " : cout << "Introduzca el numero de robot soldador: ";
                         cin >> n;
                     } while(n < 0 || n > i);
                 
@@ -740,7 +817,14 @@ int main () {
             }
 
             if (choice2 == '4') {
-                cout << "Number robot for on/off: ";
+                i = 0;
+                cout << "Number robot for on/off: " << endl;
+                for(RobotWelder r : robot_welders) 
+                        cout << to_string(++i) + ". " + to_string(r.getSpeed()) << "\t"
+                            << r.getTimeWelding() << "\t"
+                            << r.getManipulator() << "\t"
+                            << r.getRadius()
+                        << endl;
                 do {
                     cin >> n;
                 } while(n < 0 || n > i);
@@ -759,8 +843,22 @@ int main () {
 
             choice2 = getch();
 
+            if (choice2 == 9)  {
+                if (language)
+                    cout << "Language replaced" << endl;
+                else 
+                    cout << "Idioma reemplazado" << endl;
+                language = !language;
+                
+            }
+
             if (choice2 == '1') {
-                cout << "Size \t Name \t Metal Type" << endl;
+
+                if (language)
+                    cout << "Size \t Name \t Metal Type" << endl;
+                else
+                    cout << "Tamano \t Nombre \t Tipo de metal" << endl;
+
                 cin >> Size >> Name >> MetalType;
 
                 Detail detail(Size, Name, MetalType);            
@@ -774,13 +872,21 @@ int main () {
                 
                 i = 0;
 
+                if (language)
+                    cout << "Size \t Name \t Metal Type" << endl;
+                else
+                    cout << "Tamano \t Nombre \t Tipo de metal" << endl;
+
                 if (!details.empty()) {
                     for(Detail d : details) 
                         cout << to_string(++i) + ". " + to_string(d.getSize()) << " \t " << 
                                                                 d.getName() << " \t " << 
                                                                 d.getMetalType() << endl; 
                 } else {
-                    cout << "Add minimum 1 detail" << endl;
+                    if(language)
+                        cout << "Add minimum 1 detail" << endl;
+                    else 
+                        cout << "Agregar minimo 1 detalle" << endl;
                 }   
             }
 
@@ -789,7 +895,9 @@ int main () {
                 i = 0;
 
                 if (!details.empty()) {
-                    cout << "Details: " << endl;
+                    
+                    language ? cout << "Details: " << endl : cout << "Detalle: " << endl;
+                    
                     for(Detail d : details) 
                         cout << to_string(++i) + ". " + to_string(d.getSize()) << " \t " << 
                                                                 d.getName() << " \t " << 
@@ -834,6 +942,7 @@ int main () {
         
     out.close();
 
+    i = 0;
     out.open(user_database_path_welders);
     if (out.is_open())
         for (Welder w : welders)
@@ -847,5 +956,29 @@ int main () {
         
     out.close();
 
+    i = 0;
+    out.open(user_database_path_robot_welders);
+    if (out.is_open())
+        for (RobotWelder r : robot_welders)
+            out <<"\n" + to_string(++i) + " " + 
+                        to_string(r.getSpeed()) + " " +
+                        to_string(r.getTimeWelding()) + " " +
+                        to_string(r.getManipulator()) + " " +
+                        to_string(r.getRadius());
+        
+    out.close();
+
+    i = 0;
+    out.open(user_database_path_detail);
+    if (out.is_open())
+        for (Detail d : details)
+            out <<"\n" + to_string(++i) + " " + 
+                        to_string(d.getSize()) + " " +
+                        d.getName() + " " +
+                        d.getMetalType();
+        
+    out.close();
+
+    system("pause");
     return 0;
 }

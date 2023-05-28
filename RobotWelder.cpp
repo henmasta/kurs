@@ -7,7 +7,7 @@
 using namespace std;
     
 RobotWelder::RobotWelder() {
-    power = false;
+    power = true;
     TimeWelding = 3;
 };
 
@@ -16,6 +16,7 @@ RobotWelder::RobotWelder(int Speed, int TimeWelding, float Manipulator, float Ra
     this->TimeWelding = TimeWelding;
     this->Manipulator = Manipulator;
     this->Radius = Radius;
+    power = true;
 };
 
 void RobotWelder::setSpeed(int Speed) {this->Speed = Speed;}
@@ -37,7 +38,7 @@ bool RobotWelder::Power() {
 
 bool RobotWelder::Welding(Detail &_detail, int Size) {
     
-    if (!power) {
+    if (power == false) {
 
         //cout << "OK" << endl;
         if (_detail.getName() != "" && _detail.getMetalType() != "" && _detail.getSize() != 0) {
