@@ -9,7 +9,7 @@ class Turner : public Employee {
     private:
 
         int Experience;
-        int Department;
+        int Departament;
 
         public:
 
@@ -17,13 +17,15 @@ class Turner : public Employee {
             Turner (string FIO, int Age, int Stage, int Number);
             bool Trimming(Detail &_detail, int Size);
             
-            void setDepartment (int Department);
+            void setDepartment (int Departament);
             int  getDepartament();
 
             void setExperience (int Experience);
             int  getExperience();
 
             void UpExperience();
+
+            void operator++();
 };
 
 #endif

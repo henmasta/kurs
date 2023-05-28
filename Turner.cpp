@@ -47,12 +47,16 @@ bool Turner::Trimming(Detail &_detail, int Size) {
 
         
 
-void Turner::setDepartment (int Department) { this->Department = Department; }
-int  Turner::getDepartament() { return Department; }
+void Turner::setDepartment (int Departament) { this->Departament = Departament; }
+int  Turner::getDepartament() { return Departament; }
 
 void Turner::setExperience (int Experience) { this->Experience = Experience; }
 int  Turner::getExperience()  { return Experience; }
 
 void Turner::UpExperience() {
     ++Experience;
+}
+
+void Turner:: operator++ (){
+    Departament += 1;
 }
