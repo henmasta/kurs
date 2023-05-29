@@ -15,3 +15,7 @@ string Detail::getName() {return Name;}
 
 void Detail::setMetalType(string MetalType) {this->MetalType = MetalType;}
 string Detail::getMetalType() {return MetalType;}
+
+bool Detail::operator==(const Detail& detail) {
+    return Name == detail.Name;
+}

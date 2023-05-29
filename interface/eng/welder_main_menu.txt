@@ -2,4 +2,4 @@
 2. Output welders list
 3. Welding detail
 4. Del Welder
-Esc. Exit
+0. Exit

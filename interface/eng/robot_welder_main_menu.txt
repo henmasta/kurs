@@ -2,5 +2,6 @@
 2. Output robot welders list
 3. Welding detail
 4. On robot
-5. Del Robot Welder
+5. Rotate the robot
+6. Del Robot Welder
 0. Exit

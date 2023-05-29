@@ -13,6 +13,7 @@ class RobotWelder : public Robot, public Welder {
         int TimeWelding;
         float Manipulator;
         float Radius;
+        float Move_num;
 
     public:
 
@@ -35,7 +36,7 @@ class RobotWelder : public Robot, public Welder {
         bool Power();
         bool Welding(Detail &_detail, int Size);
 
-        float Move(float corner);
+        void Move(float Move_num);
 
 
         string Status();

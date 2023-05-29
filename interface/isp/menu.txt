@@ -2,4 +2,4 @@
 2. Soldador
 3. Robot de soldadura
 4. Detalle
-Esc Salir
+0. Salir

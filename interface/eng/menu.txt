@@ -2,4 +2,5 @@
 2. Welder
 3. Robot Welder
 4. Detail
-Esc. Exit
+5. Calculate objects
+0. Exit

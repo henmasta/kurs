@@ -4,11 +4,13 @@ PI Department
 
 
                     Course project
-                    on the discipline: "Object-oriented programming
+                    on the discipline: "Object-oriented programming"
                     on "Object-oriented system "Zavod""
 
 Supervisor:                                             Executed:
 senior lecturer PI                                      student gr. PI-22B
 Schedrin S.V.                                           Semenyuta N.V.
 Grishchenko D.A.
+<TAB> for replace language
+<ENTER> for start
                             Donetsk 2023

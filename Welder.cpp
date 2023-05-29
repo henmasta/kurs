@@ -25,8 +25,8 @@ using namespace std;
         void Welder::setExperience (int Experience) { this->Experience = Experience; }
         int  Welder::getExperience()  { return Experience; }
 
-        void Welder::UpExperience() {
-            ++Experience;
+        void Welder::operator++() {
+            Experience += 1;
         }
 
         bool Welder::Welding(Detail &_detail, int Size) {
@@ -53,4 +53,8 @@ using namespace std;
 
         bool Welder::ColdWelding(Detail &_detail) {
             return (_detail.getName() != "" && _detail.getMetalType() != "" && _detail.getSize() != 0) ?  1 : 0;
+        }
+
+        string Welder::companyName() {
+            return "Welders Inc.";
         }

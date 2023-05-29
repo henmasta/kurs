@@ -4,4 +4,4 @@
 4. Fix Turner Machine
 5. Up stage
 6. Del Turner
-Esc. Exit
+0. Exit

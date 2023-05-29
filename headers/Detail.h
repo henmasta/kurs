@@ -24,6 +24,8 @@ class Detail {
 
         void setMetalType(string MetalType);
         string getMetalType();
+
+        bool operator==(const Detail& detail);
 };
 
 #endif

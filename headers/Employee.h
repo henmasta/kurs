@@ -26,6 +26,9 @@ class Employee {
         void setStage(int Stage);
         int getStage();
 
+        virtual string companyName() = 0;
+
 };
 
 #endif
+

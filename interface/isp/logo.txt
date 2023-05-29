@@ -11,4 +11,5 @@ Supervisor:                                             Ejecutado:
 profesor senior PI                                      estudiante gr. PI-22B
 Schedrin S.V.                                           Semenyuta N.V.
 Grishchenko D.A.
+<TAB> para reemplazar idioma
                             Donetsk 2023

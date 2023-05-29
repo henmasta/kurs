@@ -24,11 +24,13 @@ class Welder : public Employee {
         void setExperience (int Experience);
         int  getExperience();
 
-        void UpExperience();
+        void operator++();
 
         bool Welding(Detail &_detail, int Size);
 
         bool ColdWelding(Detail &_detail);
+
+        virtual string companyName();
 };
 
 #endif

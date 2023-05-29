@@ -57,6 +57,11 @@ void Turner::UpExperience() {
     ++Experience;
 }
 
-void Turner:: operator++ (){
+void Turner::operator++ (){
     Stage += 1;
+}
+
+
+string Turner::companyName() {
+    return "Turners Inc.";
 }

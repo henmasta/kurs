@@ -26,6 +26,8 @@ class Turner : public Employee {
             void UpExperience();
 
             void operator++();
+
+            virtual string companyName();
 };
 
 #endif

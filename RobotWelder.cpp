@@ -66,7 +66,10 @@ bool RobotWelder::Welding(Detail &_detail, int Size) {
     return 0;
 } 
 
-float RobotWelder::Move(float corner) {return corner;}
+void RobotWelder::Move(float Move_num) {
+    this->Move_num = Move_num;
+    cout << "Robot moved on " << Move_num << endl;
+}
 
 
 string RobotWelder::Status() {return "";}

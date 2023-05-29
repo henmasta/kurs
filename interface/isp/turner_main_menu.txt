@@ -4,4 +4,4 @@
 4. Arreglar la maquina Turner
 5. Subir al escenario
 6. Del Turner
-Esc. Salida
+0. Salida

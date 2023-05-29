@@ -1,4 +1,4 @@
 ﻿1. Agregar detalle
 2. Lista de retrasos de salida
 3. Del detalle
-Esc. Salida
+0. Salida

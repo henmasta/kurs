@@ -31,3 +31,4 @@ void Employee::setStage(int Stage)  {
 int Employee::getStage()  { 
     return Stage;  
 }        
+

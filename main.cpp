@@ -241,7 +241,7 @@ void set_path_to_database(string user_database_path, string first, string standa
 
             try {
                 
-                if (regex_match(path_folders, regex("[A-Za-z0-9 ]")))
+                if (regex_match(path_folders, regex("[A-Za-z0-9]")))
                     throw "not created";
 
                 mkdir(path_folders_to_char);
@@ -249,12 +249,8 @@ void set_path_to_database(string user_database_path, string first, string standa
                     throw "not created";
             } catch (...){
                 cerr << "path not created \nuncorrected name" << endl;
-                exit(-1);
             }
             delete(path_folders_to_char);
-
-            path_folders = "";
-            file_path_name = "";
 
             out.open(user_database_path);
             out.close();
@@ -273,15 +269,17 @@ void set_path_to_database(string user_database_path, string first, string standa
                 
                 delete(path_folders_to_char);
 
-                path_folders = "";
-                file_path_name = "";
+                
 
                 out.open(user_database_path);
                 out.close();
             }
-        }      
+        }
+        path_folders = "";
+        file_path_name = "";      
     } 
 }
+
 
 int main () {
 
@@ -320,7 +318,7 @@ int main () {
     map <int, string> turners_number;
     
     
-    int choice, choice2, choice3;
+    int ch, choice, choice2, choice3;
     
     //Turner turner("pety", 22, 2, 153);
     //Detail dett(20, "detail1", "fe");
@@ -401,6 +399,7 @@ int main () {
 
         
         read_from_file(path_to_lang + "logo.txt");
+
         read_from_file(path_to_lang + "menu.txt");
         
 
@@ -430,6 +429,11 @@ int main () {
                 language = !language;
                 
             }
+
+            if (choice2 == '0') {
+                break;
+            }
+
             if (choice2 == '1') {
 
                 if (language)
@@ -481,6 +485,7 @@ int main () {
                                 cout << "Introduzca el numero de sintonizador: ";
 
                             cin >> n;
+                            if (n < 0 || n > i) cout << "Enter correctly number" << endl;
                         } while(n < 0 || n > i);
                     
 
@@ -592,6 +597,8 @@ int main () {
                     language ? cout << "Not exists!" << endl : cout << "No existe!" << endl;
             }
 
+            
+
         }
 
         if (choice == '2') {
@@ -606,6 +613,10 @@ int main () {
                     cout << "Idioma reemplazado" << endl;
                 language = !language;
                 
+            }
+
+            if (choice2 == '0') {
+                break;
             }
 
             if (choice2 == '1') {
@@ -661,6 +672,7 @@ int main () {
                     do {
                         cout << "Enter welder number: ";
                         cin >> n;
+                        if (n < 0 || n > i) cout << "Enter correctly number" << endl;
                     } while(n < 0 || n > i);
                 
 
@@ -748,6 +760,9 @@ int main () {
                 language = !language;
                 
             }
+            if (choice2 == '0') {
+                break;
+            }
 
             if (choice2 == '1') {
                     
@@ -814,6 +829,7 @@ int main () {
                     do {
                         language ? cout << "Enter robot welder number: " : cout << "Introduzca el numero de robot soldador: ";
                         cin >> n;
+                        if (n < 0 || n > i) cout << "Enter correctly number" << endl;
                     } while(n < 0 || n > i);
                 
 
@@ -863,11 +879,45 @@ int main () {
                         << endl;
                 do {
                     cin >> n;
+                    if (n < 0 || n > i) cout << "Enter correctly number" << endl;
                 } while(n < 0 || n > i);
                 robot_welders.at(n-1).Power();
             }
 
+
             if (choice2 == '5') {
+
+                i = 0;
+
+                if (!robot_welders.empty()) {
+
+                    cout << "Enter number robot for rotation: " << endl;
+
+                    for (RobotWelder r : robot_welders)
+                        cout << to_string(++i) + " " + 
+                                to_string(r.getSpeed()) + " " +
+                                to_string(r.getTimeWelding()) + " " +
+                                to_string(r.getManipulator()) + " " +
+                                to_string(r.getRadius()) 
+                        << endl;
+
+                    do {
+                        cin >> n;
+                        if (n < 0 || n > i) cout << "Enter correctly number" << endl;
+                        fflush(stdin);
+                    } while(n < 0 || n > i);
+
+                    float Move_num;
+                    cout << "Enter how far to turn: ";
+                    cin >> Move_num;
+
+                    robot_welders.at(n-1).Move(Move_num);
+                } else {
+                    cout << "Add minimum 1 robot welder" << endl;
+                }
+            }
+
+            if (choice2 == '6') {
                 i = 0;
 
                 if (!robot_welders.empty()) {
@@ -884,6 +934,7 @@ int main () {
                     do {
                         cout << "Number robot welder for delete: ";
                         cin >> n;
+                        if (n < 0 || n > i) cout << "Enter correctly number" << endl;
                     } while(n < 0 || n > i);
                     cout << "Robot welder with name " << robot_welders.at(n-1).getName() << " delete" << endl;
 
@@ -911,6 +962,10 @@ int main () {
                 
             }
 
+            if (choice2 == '0') {
+                break;
+            }
+
             if (choice2 == '1') {
 
                 if (language)
@@ -920,10 +975,24 @@ int main () {
 
                 cin >> Size >> Name >> MetalType;
 
-                Detail detail(Size, Name, MetalType);            
+                Detail detail(Size, Name, MetalType);
+
+                int m = 0;
+
+                for (Detail d : details)
+                    if (detail == d) {
+                        m++;
+                    }
+                if (m > 0) {
+                    cout << "Create a part with a different name!" << endl;
+                }
+
+                if (m == 0){
+                    details.push_back(detail);
+                    cout << "OK" << endl;
+                }
                 
-                details.push_back(detail);
-                cout << "OK" << endl;
+                
             }
 
 
@@ -964,6 +1033,7 @@ int main () {
                     do {
                         cout << "Number detail for delete: ";
                         cin >> n;
+                        if (n < 0 || n > i) cout << "Enter correctly number" << endl;
                     } while(n < 0 || n > i);
                     cout << "Detail with name " << details.at(n-1).getName() << " delete" << endl;
 
@@ -974,6 +1044,15 @@ int main () {
             }
         }
 
+        if (choice == '5') {
+            cout << "Total objects: " +  to_string(turners.size() + mach.size() + details.size() + welders.size() + robot_welders.size()) << endl;
+
+            cout << "Total turners: " + to_string(turners.size()) << endl;
+            cout << "Total Turner Machine turners: " + to_string(mach.size()) << endl;
+            cout << "Total Details turners: " + to_string(details.size()) << endl;
+            cout << "Total Welders turners: " + to_string(welders.size()) << endl;
+            cout << "Total Robot Welders: " + to_string(robot_welders.size()) << endl;
+        }
 
         if (choice == 48) {
             break;
