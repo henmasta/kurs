@@ -2,5 +2,6 @@
 2. Lista de volteadores de salida
 3. Detalle de recorte
 4. Arreglar la maquina Turner
-5. Del Turner
+5. Subir al escenario
+6. Del Turner
 Esc. Salida

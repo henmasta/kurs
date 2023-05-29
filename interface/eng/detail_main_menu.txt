@@ -1,0 +1,4 @@
+﻿1. Add detail
+2. Output delail list
+3. Del detail
+Esc. Exit

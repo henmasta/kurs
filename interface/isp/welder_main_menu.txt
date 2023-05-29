@@ -1,0 +1,5 @@
+﻿1. Agregar soldador
+2. Lista de soldadores de salida
+3. Detalle de soldadura
+4. Del soldador
+Esc. Salida

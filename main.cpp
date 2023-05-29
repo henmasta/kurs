@@ -2,7 +2,6 @@
 #include <dir.h>
 #include <regex>
 #include <vector>
-//#include <future>
 #include <string>
 #include <conio.h>
 #include <fstream>
@@ -20,8 +19,6 @@
 #include "headers/Welder.h"
 #include "headers/Turner.h"
 #include "headers/RobotWelder.h"
-
-#define MAX 100
 
 using namespace std;
 using namespace filesystem;
@@ -330,7 +327,7 @@ int main () {
     //turners.push_back(turner);
     //details.push_back(dett);
 
-    string user_database_path_turners,
+    string  user_database_path_turners,
             user_database_path_welders,
             user_database_path_robot_welders,
             user_database_path_detail;
@@ -401,7 +398,9 @@ int main () {
             path_to_lang = "interface/eng/";
         else 
             path_to_lang = "interface/isp/";
+
         
+        read_from_file(path_to_lang + "logo.txt");
         read_from_file(path_to_lang + "menu.txt");
         
 
@@ -433,7 +432,10 @@ int main () {
             }
             if (choice2 == '1') {
 
-                cout << "FIO \t Age \t Stage \t Number" << endl;
+                if (language)
+                    cout << "FIO \t Age \t Stage \t Number" << endl;
+                else
+                    cout << "FIO \t Edad \t Etapa \t Numero" << endl;
                 cin >> FIO >> Age >> Stage >> Number;
 
                 //turners_number[Number] = to_string(last_line("database/turners.txt")) + "." + " FIO: " + FIO + " Age: " + to_string(Age) + " Stage: " + to_string(Stage) + " Number: " + to_string(Number);
@@ -535,10 +537,37 @@ int main () {
             }
             
             if (choice2 == '5') {
+                i = 0;
+                cout << "Up stage for: " << endl;
+
+                if (language)
+                    cout << "FIO \t Age \t Stage \t Number" << endl;
+                else
+                    cout << "FIO \t Edad \t Etapa \t Numero" << endl;
+
+                for(Turner t : turners) 
+                    cout << to_string(++i) + ". " + t.getFIO() << " \t " << 
+                                                    t.getAge() << " \t " << 
+                                                    t.getStage() << " \t " << 
+                                                    t.getNumber() << endl;
+
+                do {
+                    cin >> n;
+                    fflush(stdin);
+                } while (n < 0 || n > i);
+
+                ++turners.at(n-1);
+            }
+
+
+            if (choice2 == '6') {
 
                 i = 0;
 
-                cout << "FIO \t Age \t Stage \t Number" << endl;
+                if (language)
+                    cout << "FIO \t Age \t Stage \t Number" << endl;
+                else
+                    cout << "FIO \t Edad \t Etapa \t Numero" << endl;
 
                 for(Turner t : turners) 
                     cout << to_string(++i) + ". " + t.getFIO() << " \t " << 
@@ -560,17 +589,13 @@ int main () {
 
                     turners.erase(turners.begin() + n-1);
                 } else 
-                    cout << "Not exists!" << endl;
+                    language ? cout << "Not exists!" << endl : cout << "No existe!" << endl;
             }
 
         }
 
         if (choice == '2') {
-            cout << "1. Add Welder\n" <<
-                    "2. Output welders list\n" <<
-                    "3. Welding detail\n" <<
-                    "4. Del Welder\n" << 
-                    "Esc. Exit" << endl;
+            read_from_file(path_to_lang + "welder_main_menu.txt");
             
             choice2 = getch();
 
@@ -585,7 +610,10 @@ int main () {
 
             if (choice2 == '1') {
 
-                cout << "FIO \t Age \t Stage \t Number \t Experience \t Departament" << endl;
+                if (language)
+                    cout << "FIO \t Age \t Stage \t Number \t Experience \t Departament" << endl;
+                else
+                    cout << "FIO \t Edad \t Etapa \t Número \t Experiencia \t Departamento" << endl;
                 cin >> FIO >> Age >> Stage >> Number >> Experience >> Departament;
 
                 Welder welder(FIO, Age, Stage, Number, Experience, Departament);            
@@ -598,7 +626,10 @@ int main () {
             if (choice2 == '2') {
                 i = 0;
                 cout << "Welders: " << endl;
-                cout << "FIO \t Age \t Stage \t Number \t Experience \t Departament" << endl;
+                if (language)
+                    cout << "FIO \t Age \t Stage \t Number \t Experience \t Departament" << endl;
+                else
+                    cout << "FIO \t Edad \t Etapa \t Número \t Experiencia \t Departamento" << endl;
 
                 for(Welder w : welders) 
                     cout << to_string(++i) + ". " + w.getFIO() << " \t " << 
@@ -616,8 +647,10 @@ int main () {
                     i = 0;
                     cout << "Who make it's work? " << endl;
 
-                    cout << "FIO \t Age \t Stage \t Number \t Experience \t Departament" << endl;
-
+                    if (language)
+                        cout << "FIO \t Age \t Stage \t Number \t Experience \t Departament" << endl;
+                    else
+                        cout << "FIO \t Edad \t Etapa \t Número \t Experiencia \t Departamento" << endl;
                     for(Welder w : welders) 
                         cout << to_string(++i) + ". " + w.getFIO() << " \t " << 
                                                         w.getAge() << " \t " << 
@@ -668,7 +701,10 @@ int main () {
 
                 i = 0;
 
-                cout << "FIO \t Age \t Stage \t Number" << endl;
+                if (language)
+                    cout << "FIO \t Age \t Stage \t Number" << endl;
+                else
+                    cout << "FIO \t Edad \t Etapa \t Numero" << endl;
 
                 for(Welder w : welders) 
                     cout << to_string(++i) + ". " + w.getFIO() << " \t " << 
@@ -831,15 +867,38 @@ int main () {
                 robot_welders.at(n-1).Power();
             }
 
+            if (choice2 == '5') {
+                i = 0;
+
+                if (!robot_welders.empty()) {
+                    
+                    language ? cout << "Robots welders: " << endl : cout << "Robots soldadores: " << endl;
+                    
+                    for (RobotWelder r : robot_welders)
+                        cout << to_string(++i) + " " + 
+                                to_string(r.getSpeed()) + " " +
+                                to_string(r.getTimeWelding()) + " " +
+                                to_string(r.getManipulator()) + " " +
+                                to_string(r.getRadius()) 
+                        << endl;
+                    do {
+                        cout << "Number robot welder for delete: ";
+                        cin >> n;
+                    } while(n < 0 || n > i);
+                    cout << "Robot welder with name " << robot_welders.at(n-1).getName() << " delete" << endl;
+
+                    robot_welders.erase(robot_welders.begin() + n-1);
+                } else {
+                    cout << "Add minimum 1 detail" << endl;
+                }   
+            }
+
 
         }
 
         if (choice == '4') {
 
-            cout << "1. Add detail\n" <<
-                    "2. Output delail list\n" <<
-                    "3. Del detail\n" <<
-                    "Esc. Exit" << endl;
+            read_from_file(path_to_lang + "detail_main_menu.txt");
 
             choice2 = getch();
 
@@ -855,9 +914,9 @@ int main () {
             if (choice2 == '1') {
 
                 if (language)
-                    cout << "Size \t Name \t Metal Type" << endl;
+                    cout << "  Size \t Name \t Metal Type" << endl;
                 else
-                    cout << "Tamano \t Nombre \t Tipo de metal" << endl;
+                    cout << "  Tamano \t Nombre \t Tipo de metal" << endl;
 
                 cin >> Size >> Name >> MetalType;
 
@@ -873,9 +932,9 @@ int main () {
                 i = 0;
 
                 if (language)
-                    cout << "Size \t Name \t Metal Type" << endl;
+                    cout << "  Size \t Name \t Metal Type" << endl;
                 else
-                    cout << "Tamano \t Nombre \t Tipo de metal" << endl;
+                    cout << "  Tamano \t Nombre \t Tipo de metal" << endl;
 
                 if (!details.empty()) {
                     for(Detail d : details) 
