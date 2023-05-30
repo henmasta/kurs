@@ -19,8 +19,6 @@ class Engine {
         void setStatusBar(int status_bar);
         int getStatusBar();
         bool Status();
-
-
 };
 
 #endif

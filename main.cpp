@@ -45,6 +45,8 @@ int last_line(const string filename) {
     return n;
 }
 
+// Read from file for everyone class
+
 vector<Turner> push_from_file_turner(vector<Turner> trn, string file) {
     
     int NO;
@@ -184,9 +186,9 @@ vector<Detail> push_from_file_detail(vector<Detail> det, string file) {
     return det;
 
 }
+// Where end read database files
 
-
-
+// Use how read interface files
 void read_from_file(string file) {
 
     string file_line;
@@ -199,6 +201,9 @@ void read_from_file(string file) {
     
     in.close();
 }
+
+
+// slice path on folder path and file name
 
 string path_folders;
 string file_path_name;
@@ -229,6 +234,9 @@ void slice_user_path(string path) {
     }
 }
 
+
+
+// Set path for read/write
 void set_path_to_database(string user_database_path, string first, string standart_path, ofstream& out) {
     
     if (!exists(user_database_path)) {
@@ -269,12 +277,12 @@ void set_path_to_database(string user_database_path, string first, string standa
                 
                 delete(path_folders_to_char);
 
-                
-
                 out.open(user_database_path);
                 out.close();
             }
         }
+
+        // otherwise path_folder set database/database/database
         path_folders = "";
         file_path_name = "";      
     } 
@@ -319,11 +327,6 @@ int main () {
     
     
     int ch, choice, choice2, choice3;
-    
-    //Turner turner("pety", 22, 2, 153);
-    //Detail dett(20, "detail1", "fe");
-    //turners.push_back(turner);
-    //details.push_back(dett);
 
     string  user_database_path_turners,
             user_database_path_welders,
@@ -334,6 +337,8 @@ int main () {
     
 
     system("cls");
+
+    // first_* for check zero
 
     cout << "Enter path for turners to database(for standart path \"database/turners.txt\" type 0): ";
     cin >> user_database_path_turners;
@@ -406,6 +411,7 @@ int main () {
         choice = getch();
         
         system("cls");
+
         if (choice == 9)  {
             if (language)
                 cout << "Language replaced" << endl;
@@ -414,7 +420,7 @@ int main () {
             language = !language;
             
         }
-        
+        // Turner
         if (choice == '1') {
 
             read_from_file(path_to_lang + "turner_main_menu.txt");
@@ -422,6 +428,7 @@ int main () {
             choice2 = getch();
 
             if (choice2 == 9)  {
+
                 if (language)
                     cout << "Language replaced" << endl;
                 else 
@@ -463,7 +470,7 @@ int main () {
 
             if (choice2 == '3') {
                 if (!turn.Power()) {
-                    //cout << eng.getStatusBar() << endl;
+
                     if (!turners.empty()) {
 
                         i = 0;
@@ -596,11 +603,8 @@ int main () {
                 } else 
                     language ? cout << "Not exists!" << endl : cout << "No existe!" << endl;
             }
-
-            
-
         }
-
+        // Welder
         if (choice == '2') {
             read_from_file(path_to_lang + "welder_main_menu.txt");
             
@@ -744,7 +748,7 @@ int main () {
                     language ? cout << "Not exists!" << endl : cout << "No existe!" << endl;
             }
         }
-
+        // Robot Welser
         if (choice == '3') {
 
             read_from_file(path_to_lang + "robot_welder_main_menu.txt");
@@ -946,7 +950,7 @@ int main () {
 
 
         }
-
+        // Detail
         if (choice == '4') {
 
             read_from_file(path_to_lang + "detail_main_menu.txt");
@@ -1043,7 +1047,7 @@ int main () {
                 }   
             }
         }
-
+        // Total objects
         if (choice == '5') {
             cout << "Total objects: " +  to_string(turners.size() + mach.size() + details.size() + welders.size() + robot_welders.size()) << endl;
 
@@ -1067,7 +1071,9 @@ int main () {
         cout << "Adios" << endl;
 
 
-   
+
+
+    // Write to file
     i = 0;
     out.open(user_database_path_turners);
     if (out.is_open())

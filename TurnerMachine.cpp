@@ -11,7 +11,6 @@ bool TurnerMachine::Power() {
     else {
         return true;
     }
-    //return en.Status() ? false : true;
 }
 
 void TurnerMachine::ToZero() {
